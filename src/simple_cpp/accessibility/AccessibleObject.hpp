@@ -11,9 +11,10 @@ class AccessibleObject {
  public:
   explicit AccessibleObject(AtspiAccessible* value);
 
-  AccessibleObject(const AccessibleObject&) = delete;
-  AccessibleObject& operator=(const AccessibleObject&) = delete;
-  AccessibleObject(AccessibleObject&&) = delete;
+  AccessibleObject(const AccessibleObject&);
+  AccessibleObject& operator=(const AccessibleObject&);
+  AccessibleObject(AccessibleObject&&);
+  AccessibleObject& operator=(AccessibleObject &&);
   ~AccessibleObject();
 
   std::string getName() const;
@@ -40,5 +41,7 @@ class AccessibleObject {
 
   bool isVisible() const;
 };
+
+AccessibleObject desktop();
 
 #endif //AT_SPI_DECORATOR__ACCESSIBLEOBJECT_HPP_

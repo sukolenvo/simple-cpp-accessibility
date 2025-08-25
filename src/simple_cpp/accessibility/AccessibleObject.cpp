@@ -182,3 +182,46 @@ bool AccessibleObject::isVisible() const {
     g_object_unref(state_set);
     return visible;
 }
+AccessibleObject desktop() {
+  auto init_result = atspi_init();
+  if (init_result != 0 && init_result != 1) {
+    throw AccessibleError("Failed to initialize AT-SPI " + std::to_string(init_result));
+  }
+  AtspiAccessible *desktop = atspi_get_desktop(0);
+  if (desktop == nullptr) {
+    throw AccessibleError("Failed to get desktop accessible object");
+  }
+  return AccessibleObject(desktop);
+}
+
+AccessibleObject::AccessibleObject(const AccessibleObject &other) : value(other.value) {
+  g_object_ref(value);
+}
+
+AccessibleObject &AccessibleObject::operator=(const AccessibleObject &other) {
+  if (this != &other) {
+    if (value != nullptr) {
+      g_object_unref(value);
+    }
+    value = other.value;
+    if (value != nullptr) {
+      g_object_ref(value);
+    }
+  }
+  return *this;
+}
+
+AccessibleObject::AccessibleObject(AccessibleObject &&other) : value(other.value) {
+  other.value = nullptr;
+}
+
+AccessibleObject& AccessibleObject::operator=(AccessibleObject &&other) {
+  if (this != &other) {
+    if (value != nullptr) {
+      g_object_unref(value);
+    }
+    value = other.value;
+    other.value = nullptr;
+  }
+  return *this;
+}

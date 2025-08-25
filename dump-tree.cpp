@@ -5,8 +5,8 @@
 #include <X11/Xatom.h>
 
 #include <iostream>
-#include "AccessibleObject.hpp"
-#include "AccessibleError.hpp"
+#include "src/simple_cpp/accessibility/AccessibleObject.hpp"
+#include "src/simple_cpp/accessibility/AccessibleError.hpp"
 
 static void print_info(const AccessibleObject &accessible, std::string padding) {
   auto name = accessible.getName();
@@ -75,6 +75,7 @@ static pid_t get_active_window_pid() {
 int main(int argc, gchar **argv) {
   gint i;
   gboolean found = FALSE;
+
   atspi_init();
 
   AccessibleObject desktop = AccessibleObject(atspi_get_desktop(0));
